@@ -4,18 +4,25 @@ import Sidebar from "./Sidebar";
 
 const Layout = ({ children }) => {
   return (
-    <>
-      <div className="bg-gray-800 text-black py-4 px-6 shadow-md">
+    <div className="flex flex-col h-screen bg-gray-100">
+      {/* Header */}
+      <div>
         <Header />
       </div>
 
-      <div className="flex flex-row">
-        <div className="w-full md:w-1/4">
+      {/* Body: Sidebar + Content */}
+      <div className="flex flex-1 overflow-hidden m-1">
+        {/* Sidebar */}
+        <div className="overflow-y-auto">
           <Sidebar />
         </div>
-        <div className="w-full md:w-3/4">{children}</div>
+
+        {/* Main Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {children}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 import express from "express";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import {
+  addHospital,
   deleteDonor,
   donorList,
   hospitalList,
@@ -10,10 +11,13 @@ import { adminMiddleware } from "../middlewares/adminMiddleware.js";
 
 const router = express.Router();
 
+
 //GET || DONOR LIST
 router.get("/donor-list", authMiddleware, donorList);
+
 //GET || HOSPITAL LIST
 router.get("/hospital-list", authMiddleware, hospitalList);
+
 //GET || ORGANISATION LIST
 router.get(
   "/organisation-list",
@@ -21,6 +25,7 @@ router.get(
   adminMiddleware,
   organizationList
 );
+
 // DELETE DONAR
 router.delete(
   "/delete-donor/:id",
@@ -28,5 +33,12 @@ router.delete(
   adminMiddleware,
   deleteDonor
 );
+
+// DELETE HOSPITAL
+
+// DELETE ORGANISATION
+
+// ADD HOSPITAL
+router.post("/add-hospital", authMiddleware, adminMiddleware, addHospital);
 
 export default router;

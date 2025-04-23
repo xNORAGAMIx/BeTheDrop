@@ -7,7 +7,7 @@ export const adminMiddleware = async (req, res, next) => {
     if (user?.role !== "admin") {
       return res.status(401).json({
         success: false,
-        message: "AUth Fialed",
+        message: "Auth Fialed",
       });
     } else {
       next();

@@ -7,11 +7,13 @@ export const registerController = async (req, res) => {
   try {
     const existingUser = await userModel.findOne({ email: req.body.email });
 
+    console.log(req.body);
+
     //validation
     if (existingUser) {
       return res.status(200).send({
         success: false,
-        message: "User ALready exists",
+        message: "User Already exists",
       });
     }
     //hash password
@@ -22,7 +24,7 @@ export const registerController = async (req, res) => {
     const user = new userModel(req.body);
     await user.save();
     return res.status(200).json({
-      success: true,
+      status: true,
       message: "User registered successfully",
       user,
     });
@@ -41,14 +43,14 @@ export const loginController = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ success: false, message: "Invalid credentials" });
+        .json({ status: false, message: "Invalid credentials" });
     }
 
     //check role
     if (user.role !== req.body.role) {
       return res
         .status(500)
-        .json({ success: false, message: "Role does not match" });
+        .json({ status: false, message: "Role does not match" });
     }
     //compare password
     const validPassword = await bcrypt.compare(
@@ -65,7 +67,7 @@ export const loginController = async (req, res) => {
       expiresIn: "1d",
     });
     return res.status(200).json({
-      success: true,
+      status: true,
       message: "User logged in successfully",
       token,
       user,
@@ -78,21 +80,3 @@ export const loginController = async (req, res) => {
   }
 };
 
-//dashboard
-export const dashboardController = async (req, res) => {
-  try {
-    const user = await userModel.findOne({ _id: req.body.userId });
-    return res.status(200).send({
-      success: true,
-      message: "User Fetched Successfully",
-      user,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "unable to get current user",
-      error: error.message,
-    });
-  }
-};

@@ -41,22 +41,20 @@ const Modal = ({ isOpen, toggleModal }) => {
     <>
       {/* Modal */}
       <div className="fixed inset-0 bg-transparent bg-opacity-100 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg shadow-lg w-full md:w-1/3">
-          <div className="flex justify-between items-center p-4 border-b">
-            <h1 className="text-lg font-semibold">
-              Manage Blood Record
-            </h1>
+        <div className="bg-gray-300 py-6 px-4 shadow-lg w-full rounded-4xl md:w-1/3">
+          <div className="flex justify-between items-center p-4">
+            <h1 className="text-3xl font-semibold">Manage Blood Record</h1>
             <button
               type="button"
-              className="text-gray-600 hover:text-gray-800"
+              className="text-gray-600 hover:text-red-600 cursor-pointer"
               onClick={toggleModal}
             >
-              <IoIosCloseCircle className="text-2xl" />
+              <IoIosCloseCircle className="text-4xl" />
             </button>
           </div>
-          <div className="p-4">
+          <div className="p-8">
             <div className="flex mb-4">
-              <span className="mr-2">Blood Type:</span>
+              <span className="mr-2 font-bold">Blood Type:</span>
               <div className="flex items-center space-x-4">
                 <div className="flex items-center">
                   <input
@@ -86,24 +84,41 @@ const Modal = ({ isOpen, toggleModal }) => {
               </div>
             </div>
             <select
-              className="form-select w-full p-2 mb-4 border border-gray-300 rounded-md"
+              className="w-full p-3 mb-4 border border-gray-400 rounded-lg shadow-sm focus:outline-none transition duration-200 hover:border-gray-800 font-semibold cursor-pointer"
               onChange={(e) => setBloodGroup(e.target.value)}
             >
-              <option defaultValue="Open this select menu">
-                Open this select menu
+              <option defaultValue={"Select Blood Group"}>
+                Select Blood Group
               </option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
+              <option value={"O+"} className="p-2">
+                O+
+              </option>
+              <option value={"O-"} className="p-2">
+                O-
+              </option>
+              <option value={"AB+"} className="p-2">
+                AB+
+              </option>
+              <option value={"AB-"} className="p-2">
+                AB-
+              </option>
+              <option value={"A+"} className="p-2">
+                A+
+              </option>
+              <option value={"A-"} className="p-2">
+                A-
+              </option>
+              <option value={"B+"} className="p-2">
+                B+
+              </option>
+              <option value={"B-"} className="p-2">
+                B-
+              </option>
             </select>
+
             <InputType
               labelText={"Donor Email"}
-              labelFor={"donarEmail"}
+              labelFor={"donorEmail"}
               inputType={"email"}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -116,17 +131,10 @@ const Modal = ({ isOpen, toggleModal }) => {
               onChange={(e) => setQuantity(e.target.value)}
             />
           </div>
-          <div className="flex justify-end items-center p-4 border-t">
+          <div className="flex justify-center items-center p-2 ">
             <button
               type="button"
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
-              onClick={toggleModal}
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 ml-3"
+              className="bg-blue-500 text-white font-bold text-2xl px-4 py-2 rounded-md hover:bg-blue-600 ml-3 cursor-pointer"
               onClick={handleModalSubmit}
             >
               Submit

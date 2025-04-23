@@ -1,134 +1,117 @@
 import React from "react";
-// import { userMenu } from "./Menus/userMenu";
 import { useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { BiSolidDonateBlood, BiTransferAlt } from "react-icons/bi";
 import { CgOrganisation } from "react-icons/cg";
+import { MdOutlineInventory } from "react-icons/md";
+import { IoIosAddCircle } from "react-icons/io";
+import { GoAlertFill } from "react-icons/go";
+import {
+  FaWarehouse,
+  FaHospital,
+  FaHandHoldingMedical,
+  FaUsers,
+  FaDonate,
+} from "react-icons/fa";
 
 const Sidebar = () => {
-  //GET USER STATE
   const { user } = useSelector((state) => state.auth);
-
   const location = useLocation();
 
-  return (
-    <div>
-      <div className="h-screen bg-[#dee0c8] text-white shadow-sm">
-        <div className="menu pt-24">
-          {user?.role === "organisation" && (
-            <>
-              <div
-                className={`menu-item pt-8 ${
-                  location.pathname === "/" &&
-                  "bg-white text-[#2e3200] p-2 mt-6"
-                }`}
-              >
-                <i className="fa-solid fa-warehouse text-white text-xl mr-4"></i>
-                <Link to="/" className="text-white text-xl">
-                  Inventory
-                </Link>
-              </div>
-              <div
-                className={`menu-item pt-8 ${
-                  location.pathname === "/donar" &&
-                  "bg-white text-[#2e3200] p-2 mt-6"
-                }`}
-              >
-                <i className="fa-solid fa-hand-holding-medical text-white text-xl mr-4"></i>
-                <Link to="/donar" className="text-white text-xl">
-                  Donar
-                </Link>
-              </div>
-              <div
-                className={`menu-item pt-8 ${
-                  location.pathname === "/hospital" &&
-                  "bg-white text-[#2e3200] p-2 mt-6"
-                }`}
-              >
-                <i className="fa-solid fa-hospital text-white text-xl mr-4"></i>
-                <Link to="/hospital" className="text-white text-xl">
-                  Hospital
-                </Link>
-              </div>
-            </>
-          )}
-          {user?.role === "admin" && (
-            <>
-              <div
-                className={`menu-item pt-8 ${
-                  location.pathname === "/donar-list" &&
-                  "bg-white text-[#2e3200] p-2 mt-6"
-                }`}
-              >
-                <i className="fa-solid fa-warehouse text-white text-xl mr-4"></i>
-                <Link to="/donar-list" className="text-white text-xl">
-                  Donar List
-                </Link>
-              </div>
-              <div
-                className={`menu-item pt-8 ${
-                  location.pathname === "/hospital-list" &&
-                  "bg-white text-[#2e3200] p-2 mt-6"
-                }`}
-              >
-                <i className="fa-solid fa-hand-holding-medical text-white text-xl mr-4"></i>
-                <Link to="/hospital-list" className="text-white text-xl">
-                  Hospital List
-                </Link>
-              </div>
-              <div
-                className={`menu-item pt-8 ${
-                  location.pathname === "/org-list" &&
-                  "bg-white text-[#2e3200] p-2 mt-6"
-                }`}
-              >
-                <i className="fa-solid fa-hospital text-white text-xl mr-4"></i>
-                <Link to="/org-list" className="text-white text-xl">
-                  Organisation List
-                </Link>
-              </div>
-            </>
-          )}
-          {(user?.role === "donor" || user?.role === "hospital") && (
+  const menuItems = [
+    {
+      role: "admin",
+      items: [
+        { path: "/donor-list", label: "Donor List", icon: <FaUsers /> },
+        {
+          path: "/hospital-list",
+          label: "Hospital List",
+          icon: <FaHospital />,
+        },
+        {
+          path: "/org-list",
+          label: "Organisation List",
+          icon: <CgOrganisation />,
+        },
+      ],
+    },
+    {
+      role: "hospital",
+      items: [
+        { path: "/donations", label: "Donations", icon: <FaDonate /> },
+        { path: "/transfer", label: "Transfer", icon: <BiTransferAlt /> },
+        { path: "/donor-list", label: "Donors", icon: <FaUsers /> },
+        { path: "/blood", label: "Inventory", icon: <MdOutlineInventory /> },
+        {
+          path: "/createDonation",
+          label: "Add Donation",
+          icon: <IoIosAddCircle />,
+        },
+        { path: "/alert", label: "Alerts", icon: <GoAlertFill /> },
+        { path: "/analytics", label: "Analytics", icon: <FaHospital /> },
+      ],
+    },
+    {
+      role: "donor",
+      items: [
+        { path: "/donation", label: "Donation", icon: <BiSolidDonateBlood /> },
+        { path: "/hospital", label: "Hospitals", icon: <FaHospital /> },
+        { path: "/donor-alerts", label: "Alerts", icon: <GoAlertFill /> },
+        { path: "/donor-responses", label: "Responses", icon: <FaHospital /> },
+      ],
+    },
+  ];
+
+  const renderMenu = () => {
+    const currentRoleMenu = menuItems.find((menu) => menu.role === user?.role);
+
+    if (!currentRoleMenu) return null;
+
+    return currentRoleMenu.items.map((item) => {
+      const isActive = location.pathname.startsWith(item.path);
+
+      return (
+        <div key={item.path}>
+          <Link
+            to={item.path}
+            className={`flex items-center space-x-4 p-4 rounded-lg transition-colors duration-300
+              ${
+                isActive
+                  ? "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg"
+                  : "bg-[#1a1a2e] text-gray-300 hover:bg-[#16213e] hover:text-white"
+              }`}
+          >
             <div
-              className={`menu-item pt-8 flex items-center ${
-                location.pathname === "/organisation" &&
-                "bg-white text-[#33351f] p-2 mt-6"
+              className={`text-2xl ${
+                isActive ? "text-white" : "text-gray-400 hover:text-white"
               }`}
             >
-              <CgOrganisation className="text-4xl mr-3 text-black" />
-              <Link to="/organisation" className="text-black text-xl">
-                Organisation
-              </Link>
+              {item.icon}
             </div>
-          )}
-          {user?.role === "hospital" && (
-            <div
-              className={`menu-item pt-8 ${
-                location.pathname === "/consumer" &&
-                "bg-white text-[#2e3200] p-2 mt-6"
-              }`}
-            >
-              <i className="fa-sharp fa-solid fa-building-ngo text-white text-xl mr-4"></i>
-              <Link to="/consumer" className="text-white text-xl">
-                Consumer
-              </Link>
-            </div>
-          )}
-          {user?.role === "donar" && (
-            <div
-              className={`menu-item pt-8 ${
-                location.pathname === "/donation" &&
-                "bg-white text-[#2e3200] p-2 mt-6"
-              }`}
-            >
-              <i className="fa-sharp fa-solid fa-building-ngo text-white text-xl mr-4"></i>
-              <Link to="/donation" className="text-white text-xl">
-                Donation
-              </Link>
-            </div>
-          )}
+            <span className="text-lg font-medium">{item.label}</span>
+          </Link>
         </div>
+      );
+    });
+  };
+
+  return (
+    <div className="h-full bg-[#0f0f1a] text-white shadow-xl mx-1 rounded-xl flex flex-col border-r border-[#16213e]">
+      {/* Menu (Scrollable) */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-4">{renderMenu()}</div>
+
+      {/* Image Below the Menu */}
+      <div className="p-6 flex justify-center">
+        <img
+          src="/transfer.jpg"
+          alt="Sidebar Image"
+          className="max-w-full h-48 rounded-lg object-cover border border-[#16213e]"
+        />
+      </div>
+
+      {/* Footer */}
+      <div className="p-4 border-t border-[#16213e] text-gray-400 text-sm text-center">
+        © {new Date().getFullYear()} BeTheDrop
       </div>
     </div>
   );

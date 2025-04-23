@@ -1,71 +1,74 @@
-import mongoose from "mongoose";
-import inventoryModel from "../models/inventoryModel";
+import Donation from "../models/donationModel.js";
+import BloodTransfer from "../models/bloodTransferModel.js";
+import Alert from "../models/alertModel.js";
 
-export const getAnalytics = async (req, res) => {
+export const getHospitalAnalytics = async (req, res) => {
   try {
-    const bloodGroups = ["O+", "O-", "AB+", "AB-", "A+", "A-", "B+", "B-"];
-    const bloodGroupData = [];
-    const organisation = new mongoose.Types.ObjectId(req.body.userId);
-    //get single blood group
-    await Promise.all(
-      bloodGroups.map(async (bloodGroup) => {
-        //COunt TOTAL IN
-        const totalIn = await inventoryModel.aggregate([
-          {
-            $match: {
-              bloodGroup: bloodGroup,
-              inventoryType: "in",
-              organisation,
-            },
-          },
-          {
-            $group: {
-              _id: null,
-              total: { $sum: "$quantity" },
-            },
-          },
-        ]);
-        //COunt TOTAL OUT
-        const totalOut = await inventoryModel.aggregate([
-          {
-            $match: {
-              bloodGroup: bloodGroup,
-              inventoryType: "out",
-              organisation,
-            },
-          },
-          {
-            $group: {
-              _id: null,
-              total: { $sum: "$quantity" },
-            },
-          },
-        ]);
-        //CALCULATE TOTAL
-        const availabeBlood =
-          (totalIn[0]?.total || 0) - (totalOut[0]?.total || 0);
+    const hospitalId = req.body.userId; // Assuming hospital is logged in
+    const currentYear = new Date().getFullYear();
+    const months = Array.from({ length: 12 }, (_, i) => i);
 
-        //PUSH DATA
-        bloodGroupData.push({
-          bloodGroup,
-          totalIn: totalIn[0]?.total || 0,
-          totalOut: totalOut[0]?.total || 0,
-          availabeBlood,
-        });
-      })
-    );
+    // Fetch all donations, transfers and alerts for this hospital
+    const donations = await Donation.find({
+      hospital: hospitalId,
+      createdAt: {
+        $gte: new Date(`${currentYear}-01-01`),
+        $lte: new Date(`${currentYear}-12-31`),
+      },
+    });
 
-    return res.status(200).json({
-      success: true,
-      message: "Blood Group Data Fetch Successfully",
-      bloodGroupData,
+    const transfers = await BloodTransfer.find({
+      $or: [{ fromHospital: hospitalId }, { toHospital: hospitalId }],
+      createdAt: {
+        $gte: new Date(`${currentYear}-01-01`),
+        $lte: new Date(`${currentYear}-12-31`),
+      },
     });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "Error In Bloodgroup Data Analytics API",
-      error,
+
+    const alerts = await Alert.find({
+      hospitalId,
+      createdAt: {
+        $gte: new Date(`${currentYear}-01-01`),
+        $lte: new Date(`${currentYear}-12-31`),
+      },
     });
+
+    const monthlyStats = months.map((month) => {
+      const donationsThisMonth = donations.filter(
+        (d) => new Date(d.createdAt).getMonth() === month
+      );
+      const transfersOut = transfers.filter(
+        (t) =>
+          t.fromHospital?.toString() === hospitalId.toString() &&
+          new Date(t.createdAt).getMonth() === month
+      );
+      const alertsThisMonth = alerts.filter(
+        (a) => new Date(a.createdAt).getMonth() === month
+      );
+
+      return {
+        month: new Date(2024, month).toLocaleString("default", {
+          month: "short",
+        }),
+        receivedML: donationsThisMonth.reduce(
+          (sum, d) => sum + d.quantityInML,
+          0
+        ),
+        sentML: transfersOut.reduce((sum, t) => sum + t.quantityInML, 0),
+        totalDonations: donationsThisMonth.length,
+        totalAlerts: alertsThisMonth.length,
+      };
+    });
+
+    res.status(200).json({
+      status: true,
+      message: " Hospital analytics retrieved successfully,",
+      analytics: monthlyStats,
+    });
+  } catch (err) {
+    console.error("Hospital analytics error:", err);
+    res
+      .status(500)
+      .json({ status: false, message: "Failed to fetch hospital analytics" });
   }
 };

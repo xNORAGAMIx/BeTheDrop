@@ -1,12 +1,14 @@
 import React from "react";
-import { BiDonateBlood, BiUserCircle } from "react-icons/bi";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { FaUserAlt } from "react-icons/fa";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Droplets } from 'lucide-react';
+
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const location = useLocation();
-  // logout handler
+
   const handleLogout = () => {
     localStorage.clear();
     alert("Logout Successfully");
@@ -14,57 +16,80 @@ const Header = () => {
   };
 
   return (
-    <>
-      <nav className="bg-white shadow-md">
-        <div className="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <BiDonateBlood color="red" />
-            <span className="text-xl font-semibold">Blood Bank App</span>
-          </div>
-          <ul className="flex items-center space-x-6">
-            <li className="text-lg">
-              <p className="flex items-center space-x-2">
-                <BiUserCircle />
-                <span>
-                  Welcome{" "}
-                  {user?.name || user?.hospitalName || user?.organisationName}
-                  &nbsp;
-                  <span className="bg-gray-500 text-white px-2 py-1 rounded-md">
-                    {user?.role}
-                  </span>
-                </span>
-              </p>
-            </li>
-            {location.pathname === "/" ||
-            location.pathname === "/donar" ||
-            location.pathname === "/hospital" ? (
-              <li className="text-lg">
-                <Link
-                  to="/analytics"
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  Analytics
-                </Link>
-              </li>
-            ) : (
-              <li className="text-lg">
-                <Link to="/" className="text-blue-600 hover:text-blue-800">
-                  Home
-                </Link>
-              </li>
-            )}
-            <li>
-              <button
-                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </li>
-          </ul>
+    <nav className="bg-[#1a1a2e] shadow-lg mx-1 rounded-b-xl border-b border-[#16213e]">
+      <div className="container mx-auto flex justify-between items-center px-6 py-3">
+        {/* Logo Section */}
+        <div className="flex items-center space-x-2">
+          <Droplets className="text-red-500 text-3xl" />
+          <Link
+            to="/"
+            className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-300 bg-clip-text text-transparent"
+          >
+            BeTheDrop
+          </Link>
         </div>
-      </nav>
-    </>
+
+        {/* Navigation Section */}
+        <div className="flex items-center space-x-6">
+          {user ? (
+            <>
+              {/* User Info */}
+              <div className="flex items-center space-x-3 bg-[#16213e] px-4 py-2 rounded-full">
+                <div className="bg-red-500 p-2 rounded-full">
+                  <FaUserAlt className="text-white text-sm" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-white">
+                    {user?.name?.toUpperCase()}
+                  </span>
+                  <span className="text-xs text-gray-300">
+                    {user?.role?.toUpperCase()}
+                  </span>
+                </div>
+              </div>
+
+              {/* Navigation Links */}
+              <div className="flex space-x-4">
+                <Link
+                  to="/profile"
+                  className="text-sm font-medium text-white hover:text-red-300 transition-colors duration-300 flex items-center"
+                >
+                  Profile
+                </Link>
+
+                {/* Logout Button */}
+                <button
+                  onClick={handleLogout}
+                  className="text-sm font-medium text-red-400 hover:text-red-300 transition-colors duration-300"
+                >
+                  Logout
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* When User is Not Logged In */}
+              <div className="flex space-x-4">
+                <Link
+                  to="/login"
+                  className="text-sm font-medium text-white hover:text-red-300 transition-colors duration-300"
+                >
+                  Login
+                </Link>
+                <div>
+                  <Link
+                    to="/register"
+                    className="bg-red-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 text-sm shadow-md"
+                  >
+                    Register
+                  </Link>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </nav>
   );
 };
 

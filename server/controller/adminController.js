@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import Hospital from "../models/hospitalModel.js";
 
 //donor list
 export const donorList = async (req, res) => {
@@ -86,3 +87,38 @@ export const deleteDonor = async (req, res) => {
     });
   }
 };
+
+// add hospital
+export const addHospital = async (req, res) => {
+  try {
+    //check existing email for hospital
+    const existingHospital = await Hospital.findOne({email: req.body.email});
+    if (existingHospital) {
+      return res.status(400).json({
+        status: false,
+        message: "Hospital already exists",
+      });
+    }
+    //create new hospital
+    const newHospital = new Hospital({
+      name: req.body.name,
+      address: req.body.address,
+      contact: req.body.contact,
+      email: req.body.email,
+      website: req.body.website,
+    });
+    await newHospital.save();
+    return res.status(200).json({
+      status: true,
+      message: "Hospital added successfully",
+      newHospital,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: false,
+      message: "Error In Add Hospital API",
+      error : error.message
+    });
+  }
+}

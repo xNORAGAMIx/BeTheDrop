@@ -2,7 +2,6 @@ import express from "express";
 import {
   registerController,
   loginController,
-  dashboardController,
 } from "../controller/authController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 
@@ -14,7 +13,6 @@ router.post("/register", registerController);
 router.post("/login", loginController);
 //LOGOUT
 router.post("/logout");
-//CURRENT USER
-router.get("/dashboard", authMiddleware, dashboardController);
+
 
 export default router;

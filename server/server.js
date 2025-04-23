@@ -1,32 +1,47 @@
+// Dependencies | Packages
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import testRoutes from "./routes/testRoutes.js";
+// Routes
+import analyticsRoutes from "./routes/analyticsRoutes.js";
+import publicRoutes from "./routes/publicRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-import inventoryRoutes from "./routes/inventoryRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import hospitalRoutes from "./routes/hospitalRoutes.js";
+import alertRoutes from "./routes/alertRoutes.js";
+import responseRoutes from "./routes/responseRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 
+// DB method import
 import { connectDB } from './config/db.js';
-
+// Load environment variables
 dotenv.config();
-
+// Connect to the database
 connectDB();
 
-
+// Initialize the Express application
 const app = express();
 
+// Middleware
 app.use(express.json());
 app.use(cors());
 
-//routes
-app.use("/api/v1/test", testRoutes);
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/inventory", inventoryRoutes);
-app.use("/api/v1/admin", adminRoutes);
 
+//routes
+app.use("/api/v1/analytics", analyticsRoutes); // Test route
+app.use("/api/v1/public", publicRoutes); // Public route
+app.use("/api/v1/auth", authRoutes); // Authentication route
+app.use("/api/v1/user", userRoutes); // User profile route
+app.use("/api/v1/hospital", hospitalRoutes); // Hopital functionality route
+app.use("/api/v1/alert", alertRoutes); // Alert functionality route
+app.use("/api/v1/response", responseRoutes); // Response management route
+app.use("/api/v1/admin", adminRoutes); // Admin functionalities
+
+// PORT
 const PORT = process.env.PORT || 5000;
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 })
