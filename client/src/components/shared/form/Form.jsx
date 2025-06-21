@@ -275,26 +275,20 @@ const Form = ({ formType, submitBtn, formTitle }) => {
                           </div>
                         </div>
                       </div>
-                      {/* <InputType
-                        labelText="Blood Group"
-                        labelFor="bloodGroup"
-                        type="text"
-                        name="bloodGroup"
-                        value={bloodGroup}
-                        onChange={(e) => setBloodGroup(e.target.value)}
-                        icon={<FiGlobe className="text-gray-400" />}
-                        placeholder="https://example.com"
-                      /> */}
-                      <InputType
-                        labelText="Hospital"
-                        labelFor="hospital"
-                        type="text"
-                        name="hospital"
-                        value={hospitalId}
-                        onChange={(e) => setHospital(e.target.value)}
-                        icon={<FiGlobe className="text-gray-400" />}
-                        placeholder="https://example.com"
-                      />
+                      {role === "donor" || role === "admin" ? (
+                        " "
+                      ) : (
+                        <InputType
+                          labelText="Hospital"
+                          labelFor="hospital"
+                          type="text"
+                          name="hospital"
+                          value={hospitalId}
+                          onChange={(e) => setHospital(e.target.value)}
+                          icon={<FiGlobe className="text-gray-400" />}
+                          placeholder="Enter hospital identity code"
+                        />
+                      )}
                     </>
                   );
               }
