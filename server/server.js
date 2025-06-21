@@ -54,6 +54,12 @@ app.use(express.json());
 app.use(cors());
 
 //routes
+app.get("/", (req,res) => {
+  res.json({
+    success: true,
+    message: "Hello from backend (BeTheDrop)"
+  })
+})
 app.use("/api/v1/analytics", analyticsRoutes); // Test route
 app.use("/api/v1/public", publicRoutes); // Public route
 app.use("/api/v1/auth", authRoutes); // Authentication route
