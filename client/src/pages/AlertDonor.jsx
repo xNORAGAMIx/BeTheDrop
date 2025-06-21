@@ -18,16 +18,27 @@ const AlertDonor = () => {
   const [error, setError] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [bloodGroupFilter, setBloodGroupFilter] = useState("All");
+  const [hospitalFilter, setHospitalFilter] = useState("All");
+  const [dateFilter, setDateFilter] = useState("All");
+  const [hospitals, setHospitals] = useState([]);
 
   const bloodGroups = ["All", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  const dateOptions = ["All", "Today", "Last 7 days", "Last 30 days"];
 
   const fetchAlerts = async () => {
     try {
       setLoading(true);
       const { data } = await API.get("/alert");
       if (data.status) {
-        setAlerts(data.alerts);
+        const sortedAlerts = data.alerts.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setAlerts(sortedAlerts);
         setFilteredData(data.alerts);
+        
+        // Extract unique hospitals
+        const uniqueHospitals = [...new Set(data.alerts.map(alert => 
+          alert.hospitalId?.name || "Unknown"
+        ))];
+        setHospitals(["All", ...uniqueHospitals]);
       } else {
         setError(data.message);
       }
@@ -50,8 +61,35 @@ const AlertDonor = () => {
       data = data.filter((alert) => alert.bloodGroup === bloodGroupFilter);
     }
 
+    if (hospitalFilter !== "All") {
+      data = data.filter((alert) => 
+        (alert.hospitalId?.name || "Unknown") === hospitalFilter
+      );
+    }
+
+    if (dateFilter !== "All") {
+      const now = new Date();
+      let startDate = new Date();
+
+      switch (dateFilter) {
+        case "Today":
+          startDate.setHours(0, 0, 0, 0);
+          break;
+        case "Last 7 days":
+          startDate.setDate(now.getDate() - 7);
+          break;
+        case "Last 30 days":
+          startDate.setDate(now.getDate() - 30);
+          break;
+        default:
+          break;
+      }
+
+      data = data.filter((alert) => new Date(alert.createdAt) >= startDate);
+    }
+
     setFilteredData(data);
-  }, [alerts, bloodGroupFilter]);
+  }, [alerts, bloodGroupFilter, hospitalFilter, dateFilter]);
 
   return (
     <Layout>
@@ -85,6 +123,40 @@ const AlertDonor = () => {
               {bloodGroups.map((group) => (
                 <option key={group} value={group}>
                   {group}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="mb-2 text-lg font-semibold text-gray-700">
+              Filter by Hospital
+            </label>
+            <select
+              value={hospitalFilter}
+              onChange={(e) => setHospitalFilter(e.target.value)}
+              className="px-4 py-2 text-lg border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 ease-in-out"
+            >
+              {hospitals.map((hospital) => (
+                <option key={hospital} value={hospital}>
+                  {hospital}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="mb-2 text-lg font-semibold text-gray-700">
+              Filter by Date
+            </label>
+            <select
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="px-4 py-2 text-lg border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 ease-in-out"
+            >
+              {dateOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
                 </option>
               ))}
             </select>

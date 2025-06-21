@@ -36,19 +36,10 @@ const Donations = () => {
     }
 
     setFilteredData(data);
+    
   }, [donation, selectedBloodGroup, sortOption]);
 
-  const bloodGroups = [
-    "All",
-    "A+",
-    "A-",
-    "B+",
-    "B-",
-    "AB+",
-    "AB-",
-    "O+",
-    "O-",
-  ];
+  const bloodGroups = ["All", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
   return (
     <Layout>
@@ -150,19 +141,19 @@ const Donations = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 py-1 text-xl font-semibold rounded-full ${
-                          record.donor.isAvailable
+                          record.donor?.isAvailable
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-700"
                         }`}
                       >
-                        {record.donor.name.toUpperCase()}
+                        {record.donor?.name.toUpperCase()}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-xl text-gray-700">
                       {record.quantityInML} mL
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-xl text-gray-700">
-                      {record.donor.email}
+                      {record.donor?.email}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-xl text-gray-500">
                       {moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}

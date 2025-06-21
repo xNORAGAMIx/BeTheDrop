@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  
   return (
     <div className="bg-[#0f0f1a] text-gray-200 min-h-screen">
       {/* Hero Section */}
@@ -15,15 +16,16 @@ const Home = () => {
               - Your Blood Saves Lives 🩸
             </h1>
             <p className="text-lg text-gray-300">
-              Join our network of life-savers. Whether you're a donor, hospital, 
-              or organization, together we can ensure no one suffers from blood shortages.
+              Join our network of life-savers. Whether you're a donor, hospital,
+              or organization, together we can ensure no one suffers from blood
+              shortages.
             </p>
             <div className="flex flex-wrap gap-4 mt-6">
               <Link
                 to="/profile"
                 className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition duration-300 shadow-lg hover:shadow-red-500/30"
               >
-                Become a Donor
+                Be The Drop
               </Link>
               <Link
                 to="/hospital"
@@ -57,27 +59,29 @@ const Home = () => {
                 icon: "❤️",
                 count: "1,500+",
                 label: "Lives Saved",
-                desc: "Through timely donations"
+                desc: "Through timely donations",
               },
               {
                 icon: "🩸",
                 count: "5,200+",
                 label: "Units Collected",
-                desc: "Across our network"
+                desc: "Across our network",
               },
               {
                 icon: "🏥",
                 count: "300+",
                 label: "Partners",
-                desc: "Hospitals & organizations"
+                desc: "Hospitals & organizations",
               },
             ].map((item, idx) => (
-              <div 
+              <div
                 key={idx}
                 className="bg-[#16213e] p-8 rounded-xl border border-[#1a1a2e] hover:border-red-500/30 transition duration-300"
               >
                 <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="text-4xl font-bold text-red-400 mb-2">{item.count}</h3>
+                <h3 className="text-4xl font-bold text-red-400 mb-2">
+                  {item.count}
+                </h3>
                 <p className="text-xl font-medium text-white">{item.label}</p>
                 <p className="mt-2 text-gray-400">{item.desc}</p>
               </div>
@@ -95,29 +99,29 @@ const Home = () => {
           <p className="text-center text-gray-400 max-w-2xl mx-auto mb-12">
             Simple steps to become a life-saver in your community
           </p>
-          
+
           <div className="grid md:grid-cols-3 gap-8 mt-12">
             {[
               {
                 step: "1",
                 title: "Register",
                 desc: "Create your profile in minutes",
-                icon: "📝"
+                icon: "📝",
               },
               {
                 step: "2",
                 title: "Get Matched",
                 desc: "We notify you when you're needed",
-                icon: "🔔"
+                icon: "🔔",
               },
               {
                 step: "3",
                 title: "Donate",
                 desc: "Visit a nearby center and save lives",
-                icon: "💉"
-              }
+                icon: "💉",
+              },
             ].map((item, idx) => (
-              <div 
+              <div
                 key={idx}
                 className="bg-[#1a1a2e] p-8 rounded-xl border border-[#16213e] hover:shadow-lg hover:shadow-red-500/10 transition duration-300"
               >
@@ -142,11 +146,11 @@ const Home = () => {
             Urgent Blood Needs
           </h2>
           <p className="text-xl text-red-100 max-w-3xl mx-auto mb-8">
-            These blood types are currently in critical shortage in your area
+            Some people might be in critical need of blood.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-10">
-            {['A+', 'B-', 'O+', 'AB-'].map(type => (
-              <div 
+            {["A+", "B-", "O+", "AB-", "B+", "AB+"].map((type) => (
+              <div
                 key={type}
                 className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-8 py-4"
               >
@@ -155,7 +159,7 @@ const Home = () => {
             ))}
           </div>
           <Link
-            to="/emergency"
+            to="/alert"
             className="inline-block bg-white text-red-600 font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition duration-300 shadow-lg"
           >
             View All Emergency Requests
@@ -172,21 +176,25 @@ const Home = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                quote: "This platform connected me with a donor when my daughter needed emergency surgery. Forever grateful.",
+                quote:
+                  "This platform connected me with a donor when my daughter needed emergency surgery. Forever grateful.",
                 author: "Sarah K., Mother",
-                role: "Recipient"
+                role: "Recipient",
               },
               {
-                quote: "As a regular donor, I love how easy it is to schedule donations and track my impact.",
+                quote:
+                  "As a regular donor, I love how easy it is to schedule donations and track my impact.",
                 author: "Michael T.",
-                role: "Donor (12 donations)"
-              }
+                role: "Donor (12 donations)",
+              },
             ].map((testimonial, idx) => (
-              <div 
+              <div
                 key={idx}
                 className="bg-[#16213e] p-8 rounded-xl border border-[#1a1a2e]"
               >
-                <p className="text-xl italic text-gray-300 mb-6">"{testimonial.quote}"</p>
+                <p className="text-xl italic text-gray-300 mb-6">
+                  "{testimonial.quote}"
+                </p>
                 <div className="flex items-center gap-4">
                   <div className="bg-red-500/20 text-red-400 w-12 h-12 rounded-full flex items-center justify-center">
                     {testimonial.author.charAt(0)}
@@ -213,28 +221,65 @@ const Home = () => {
                 <span className="text-xl font-bold text-white">BeTheDrop</span>
               </div>
               <p className="text-gray-400">
-                Connecting donors with those in need since 2023
+                Connecting donors with those in need since 2025
               </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
+              <h4 className="text-lg font-semibold text-white mb-4">
+                Quick Links
+              </h4>
               <ul className="space-y-2">
-                <li><Link to="/donate" className="text-gray-400 hover:text-red-400 transition">Donate Blood</Link></li>
-                <li><Link to="/request" className="text-gray-400 hover:text-red-400 transition">Request Blood</Link></li>
-                <li><Link to="/faq" className="text-gray-400 hover:text-red-400 transition">FAQ</Link></li>
-                <li><Link to="/contact" className="text-gray-400 hover:text-red-400 transition">Contact Us</Link></li>
+                <li>
+                  <Link
+                    to="/alerts"
+                    className="text-gray-400 hover:text-red-400 transition"
+                  >
+                    Alerts
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/hospital"
+                    className="text-gray-400 hover:text-red-400 transition"
+                  >
+                    Hospital
+                  </Link>
+                </li>
               </ul>
             </div>
 
             {/* Organization */}
             <div>
-              <h4 className="text-lg font-semibold text-white mb-4">For Organizations</h4>
+              <h4 className="text-lg font-semibold text-white mb-4">
+                For Organizations
+              </h4>
               <ul className="space-y-2">
-                <li><Link to="/hospital-register" className="text-gray-400 hover:text-red-400 transition">Hospital Registration</Link></li>
-                <li><Link to="/blood-drives" className="text-gray-400 hover:text-red-400 transition">Host a Blood Drive</Link></li>
-                <li><Link to="/partnerships" className="text-gray-400 hover:text-red-400 transition">Partnerships</Link></li>
+                <li>
+                  <Link
+                    to="/donations"
+                    className="text-gray-400 hover:text-red-400 transition"
+                  >
+                    Donation Records
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/createDonation"
+                    className="text-gray-400 hover:text-red-400 transition"
+                  >
+                    Host a Blood Drive
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/blood"
+                    className="text-gray-400 hover:text-red-400 transition"
+                  >
+                    Inventory
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -242,21 +287,30 @@ const Home = () => {
             <div>
               <h4 className="text-lg font-semibold text-white mb-4">Contact</h4>
               <address className="text-gray-400 not-italic">
-                <p>123 Life Saver Ave</p>
-                <p>Health City, HC 12345</p>
-                <p className="mt-2">emergency@betherop.org</p>
-                <p>+1 (800) DONATE-NOW</p>
+                <a href="https://das-manas.vercel.app" target="_blank" className="hover:text-red-400">MANAS DAS</a>
+                <p><a href="tel:+964175610">+91 96417XXXXX</a></p>
+                <p className="mt-2">noragami0021@gmail.com</p>
               </address>
             </div>
           </div>
 
           <div className="border-t border-[#16213e] mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm">
-              © 2023 BeTheDrop. All rights reserved.
+              © 2025 BeTheDrop. All rights reserved.
             </p>
             <div className="flex gap-4 mt-4 md:mt-0">
-              <Link to="/privacy" className="text-gray-500 hover:text-red-400 text-sm">Privacy Policy</Link>
-              <Link to="/terms" className="text-gray-500 hover:text-red-400 text-sm">Terms of Service</Link>
+              <Link
+                to="/"
+                className="text-gray-500 hover:text-red-400 text-sm"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                to="/"
+                className="text-gray-500 hover:text-red-400 text-sm"
+              >
+                Terms of Service
+              </Link>
             </div>
           </div>
         </div>

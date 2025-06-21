@@ -1,44 +1,25 @@
 import express from "express";
-import { authMiddleware } from "../middlewares/authMiddleware.js";
-import {
-  addHospital,
-  deleteDonor,
-  donorList,
-  hospitalList,
-  organizationList,
-} from "../controller/adminController.js";
 import { adminMiddleware } from "../middlewares/adminMiddleware.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { addHospital, deleteHospital } from "../controller/adminController.js";
 
 const router = express.Router();
 
+// GET DONORS
 
-//GET || DONOR LIST
-router.get("/donor-list", authMiddleware, donorList);
+// DELETE DONORS UNAVAILBLE OVER 60 DAYS
 
-//GET || HOSPITAL LIST
-router.get("/hospital-list", authMiddleware, hospitalList);
-
-//GET || ORGANISATION LIST
-router.get(
-  "/organisation-list",
-  authMiddleware,
-  adminMiddleware,
-  organizationList
-);
-
-// DELETE DONAR
-router.delete(
-  "/delete-donor/:id",
-  authMiddleware,
-  adminMiddleware,
-  deleteDonor
-);
+// REGISTER A HOSPITAL NAME
+router.post("/add-hospital", authMiddleware, adminMiddleware, addHospital);
 
 // DELETE HOSPITAL
+router.delete(
+  "/delete-hospital",
+  authMiddleware,
+  adminMiddleware,
+  deleteHospital
+);
 
-// DELETE ORGANISATION
-
-// ADD HOSPITAL
-router.post("/add-hospital", authMiddleware, adminMiddleware, addHospital);
+// ANALYTICS
 
 export default router;

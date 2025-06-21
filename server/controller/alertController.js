@@ -1,5 +1,6 @@
 import Alert from "../models/alertModel.js";
 import User from "../models/userModel.js";
+import { io } from "../server.js";
 
 // Raise alert - for hospital
 export const createAlert = async (req, res) => {
@@ -22,6 +23,8 @@ export const createAlert = async (req, res) => {
     });
 
     await newAlert.save();
+
+    io.emit("new-alert", newAlert.message);
 
     res.status(201).json({
       status: true,

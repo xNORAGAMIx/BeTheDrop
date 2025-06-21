@@ -1,74 +1,5 @@
-import userModel from "../models/userModel.js";
 import Hospital from "../models/hospitalModel.js";
-
-//donor list
-export const donorList = async (req, res) => {
-  try {
-    const donorData = await userModel
-      .find({ role: "donor" })
-      .sort({ createdAt: -1 });
-
-    return res.status(200).json({
-      success: true,
-      Toatlcount: donorData.length,
-      message: "Donor List Fetched Successfully",
-      donorData,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "Error In Donor List API",
-      error,
-    });
-  }
-};
-
-//hospital list
-export const hospitalList = async (req, res) => {
-  try {
-    const hospitalData = await userModel
-      .find({ role: "hospital" })
-      .sort({ createdAt: -1 });
-
-    return res.status(200).json({
-      success: true,
-      Toatlcount: hospitalData.length,
-      message: "HOSPITAL List Fetched Successfully",
-      hospitalData,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "Error In Hospital List API",
-      error,
-    });
-  }
-};
-
-//organization list
-export const organizationList = async (req, res) => {
-  try {
-    const orgData = await userModel
-      .find({ role: "organisation" })
-      .sort({ createdAt: -1 });
-
-    return res.status(200).json({
-      success: true,
-      Toatlcount: orgData.length,
-      message: "ORG List Fetched Successfully",
-      orgData,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "Error In ORG List API",
-      error,
-    });
-  }
-};
+import User from "../models/userModel.js";
 
 //delete donor
 export const deleteDonor = async (req, res) => {
@@ -88,11 +19,32 @@ export const deleteDonor = async (req, res) => {
   }
 };
 
+// delete hospital
+export const deleteHospital = async (req, res) => {
+  try {
+    const { id } = req.body;
+    // delete employee of hospital
+    await User.deleteMany({ hospitalId: id });
+    const response = await Hospital.findByIdAndDelete(id);
+    
+    return res.status(200).json({
+      status: true,
+      message: "Hospital deleted successfully",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      status: false,
+      message: "Error deleting hospital",
+    });
+  }
+};
+
 // add hospital
 export const addHospital = async (req, res) => {
   try {
     //check existing email for hospital
-    const existingHospital = await Hospital.findOne({email: req.body.email});
+    const existingHospital = await Hospital.findOne({ email: req.body.email });
     if (existingHospital) {
       return res.status(400).json({
         status: false,
@@ -118,7 +70,7 @@ export const addHospital = async (req, res) => {
     return res.status(500).json({
       status: false,
       message: "Error In Add Hospital API",
-      error : error.message
+      error: error.message,
     });
   }
-}
+};

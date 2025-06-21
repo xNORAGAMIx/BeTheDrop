@@ -16,8 +16,6 @@ import {
 
 const router = express.Router();
 
-
-
 // CREATE A DONATION
 router.post("/create-donation", authMiddleware, isHospitalUser, recordDonation);
 

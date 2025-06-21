@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../../services/API";
-//import { toast } from "react-toastify";
+
+import { toast } from "react-toastify";
 
 export const userLogin = createAsyncThunk(
   "auth/login",
@@ -16,6 +17,7 @@ export const userLogin = createAsyncThunk(
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
+        toast.error(error.response.data.message);
         return rejectWithValue(error.response.data.message);
       } else {
         return rejectWithValue(error.message);
@@ -30,30 +32,32 @@ export const userRegister = createAsyncThunk(
   async (
     {
       name,
+      age,
+      gender,
+      bloodGroup,
       role,
       email,
       password,
-      phone,
-      organisationName,
       address,
-      hospitalName,
-      website,
+      contact,
+      hospitalId,
     },
     { rejectWithValue }
   ) => {
     try {
       const { data } = await API.post("/auth/register", {
         name,
+        age,
+        gender,
+        bloodGroup,
         role,
         email,
         password,
-        phone,
-        organisationName,
         address,
-        hospitalName,
-        website,
+        contact,
+        hospitalId,
       });
-      if (data?.success) {
+      if (data?.status) {
         alert("User Registerd Successfully");
         window.location.replace("/login");
         // toast.success("User Registerd Successfully");

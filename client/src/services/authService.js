@@ -7,51 +7,39 @@ export const handleLogin = (e, role, email, password) => {
     if (!role || !email || !password) {
       return alert("Please Provide All Feilds");
     }
-    console.log({email, password, role});
-    
     store.dispatch(userLogin({ role, email, password }));
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 };
 
 export const handleRegister = (
   e,
   name,
+  age,
+  gender,
+  bloodGroup,
   role,
   email,
   password,
-  phone,
-  organisationName,
   address,
-  hospitalName,
-  website
+  contact,
+  hospitalId
 ) => {
   e.preventDefault();
   try {
-    console.log(
-      {role,
-      email,
-      password,
-      website,
-      name,
-      address,
-      phone,
-      organisationName,
-      hospitalName}
-    );
-
     store.dispatch(
       userRegister({
+        name,
+        age,
+        gender,
+        bloodGroup,
         role,
         email,
         password,
-        website,
-        name,
         address,
-        phone,
-        organisationName,
-        hospitalName,
+        contact,
+        hospitalId,
       })
     );
   } catch (error) {

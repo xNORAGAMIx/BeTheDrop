@@ -13,6 +13,7 @@ import {
   FaUsers,
   FaDonate,
 } from "react-icons/fa";
+import { Building2 } from "lucide-react";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
@@ -22,17 +23,13 @@ const Sidebar = () => {
     {
       role: "admin",
       items: [
-        { path: "/donor-list", label: "Donor List", icon: <FaUsers /> },
+        { path: "/donor-list", label: "Donors", icon: <FaUsers /> },
         {
-          path: "/hospital-list",
-          label: "Hospital List",
+          path: "/hospital",
+          label: "Hospitals",
           icon: <FaHospital />,
         },
-        {
-          path: "/org-list",
-          label: "Organisation List",
-          icon: <CgOrganisation />,
-        },
+        { path: "/addHospital", label: "Add ", icon: <Building2 /> },
       ],
     },
     {

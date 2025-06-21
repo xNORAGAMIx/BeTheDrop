@@ -1,17 +1,16 @@
-import React from "react";
+import { toast } from "react-toastify";
 import { FaUserAlt } from "react-icons/fa";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Droplets } from 'lucide-react';
+import { Droplets } from "lucide-react";
 
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.clear();
-    alert("Logout Successfully");
+    toast.success("Logout Successfully");
     navigate("/login");
   };
 
@@ -60,7 +59,7 @@ const Header = () => {
                 {/* Logout Button */}
                 <button
                   onClick={handleLogout}
-                  className="text-sm font-medium text-red-400 hover:text-red-300 transition-colors duration-300"
+                  className="text-sm font-medium text-red-400 hover:text-red-300 transition-colors duration-300 cursor-pointer"
                 >
                   Logout
                 </button>

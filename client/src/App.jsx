@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { useEffect } from "react";
+import io from "socket.io-client";
 
 import Homepage from "./pages/Homepage";
 import Login from "./pages/auth/Login";
@@ -26,37 +29,31 @@ import AlertDonor from "./pages/AlertDonor";
 import Test from "./pages/dashboard/Test";
 import AlertInfo from "./pages/dashboard/AlertInfo";
 import DonorResponses from "./pages/dashboard/DonorResponses";
+import AddHopital from "./pages/admin/AddHopital";
 
 const App = () => {
+  const socket = io("http://localhost:5000");
+
+  socket.on("connect", () => {
+    console.log("Connected to socket server:", socket.id);
+  });
+
+  socket.on("connected", (msg) => {
+    console.log("Message from server:", msg);
+  });
+
+  useEffect(() => {
+    socket.on("new-alert", (data) => {
+      toast.error(data);
+      return;
+    });
+
+    return () => {
+      socket.off("new-alert");
+    };
+  }, [socket]);
   return (
     <>
-      {/* <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Homepage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
-      </Routes> */}
-
       <Routes>
         <Route
           path="/admin"
@@ -243,8 +240,29 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/addHospital"
+          element={
+            <ProtectedRoute>
+              <AddHopital />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/" element={<Home />} />
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 };

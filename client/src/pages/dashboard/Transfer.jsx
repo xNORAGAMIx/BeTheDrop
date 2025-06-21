@@ -90,10 +90,10 @@ const Transfer = () => {
           {/* Form Section */}
           <div className="w-full md:w-1/2 p-8">
             <h2 className="text-3xl font-bold mb-6 text-center text-red-600">
-              Blood Transfer Request
+              Blood Transfer
             </h2>
             <p className="text-gray-600 text-center mb-8">
-              Request blood transfer to another hospital
+              Blood transfer to another hospital
             </p>
 
             <form onSubmit={transferBlood} className="space-y-5">

@@ -108,3 +108,25 @@ export const deleteHealthCondition = async (req, res) => {
     res.status(500).json({ status: false, message: "Server Error" });
   }
 };
+
+// toggle availability
+export const toggleAvailability = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const user = await User.findById(userId);
+
+    user.isAvailable = !user.isAvailable;
+    await user.save();
+    res.status(200).json({
+      status: true,
+      message: "Availability updated",
+      user
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      status: false,
+      message: "Server Error",
+    });
+  }
+};
